@@ -4,6 +4,7 @@ import (
   "fmt"
   "log"
 
+  "github.com/mingi3442/cosmos-key-converter/config"
   "github.com/mingi3442/cosmos-key-converter/infrastructure/grpc"
   "github.com/mingi3442/cosmos-key-converter/infrastructure/modules/staking"
   "github.com/mingi3442/cosmos-key-converter/internal/address/domain"
@@ -11,7 +12,12 @@ import (
 )
 
 func main() {
-  grpcClient, err := grpc.NewGRPCClient("cosmos-grpc.polkachu.com:14990")
+  cfg, err := config.LoadConfig("config.toml")
+  if err != nil {
+    log.Fatalf("Failed to load config: %v", err)
+  }
+
+  grpcClient, err := grpc.NewGRPCClient(cfg.GrpcUrl)
   if err != nil {
     log.Fatalf("Failed to create gRPC client: %v", err)
   }
@@ -20,17 +26,19 @@ func main() {
   stakingClient := staking.NewStakingClient(grpcClient.GetConnection())
   converter := addressService.NewAddressConverter(stakingClient)
 
-  accountAddr := address.NewAddress("cosmos1c4k24jzduc365kywrsvf5ujz4ya6mwymy8vq4q")
+  accountAddr := address.NewAddress(cfg.AccountAddress)
 
   validatorAddr, err := converter.ConvertToValidatorAddress(accountAddr)
   if err != nil {
     log.Fatalf("Failed to get validator address: %v", err)
   }
-  fmt.Printf("Validator operator address: %s\n", validatorAddr)
 
   consensusAddr, err := converter.ConvertToConsensusAddress(validatorAddr, accountAddr.Prefix)
   if err != nil {
     log.Fatalf("Failed to get consensus address: %v", err)
   }
-  fmt.Printf("Consensus address: %s\n", consensusAddr)
+
+  fmt.Printf("Account address:             %s\n", accountAddr.AccAddress)
+  fmt.Printf("Validator address:           %s\n", validatorAddr)
+  fmt.Printf("Consensus address:           %s\n", consensusAddr)
 }

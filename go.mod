@@ -5,6 +5,7 @@ go 1.23.1
 toolchain go1.23.5
 
 require (
+	github.com/BurntSushi/toml v1.4.0
 	github.com/cosmos/cosmos-sdk v0.50.11
 	google.golang.org/grpc v1.68.1
 )

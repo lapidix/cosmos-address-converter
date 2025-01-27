@@ -1,0 +1,17 @@
+# Cosmos Key Converter Configuration
+#
+# This configuration file is used for converting Cosmos blockchain addresses
+# between different formats (account, validator, and consensus addresses).
+#
+# Required Configuration:
+#
+# grpc_url = ""         # Cosmos chain gRPC endpoint URL
+#                       # Example: "your-grpc-endpoint.example.com:9090"
+#                       # This is required for connecting to the Cosmos network
+#
+# account_address = ""  # Your Cosmos account address
+#                      # Example: "cosmos1example0address0here0please0change0it"
+#                      # This address will be used as the base for conversion
+
+grpc_url = ""
+account_address = ""
