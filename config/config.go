@@ -5,7 +5,6 @@ import (
   "github.com/BurntSushi/toml"
 )
 
-// Config는 애플리케이션의 설정을 담는 구조체입니다.
 type Config struct {
   GrpcUrl        string `toml:"grpc_url"`
   AccountAddress string `toml:"account_address"`
